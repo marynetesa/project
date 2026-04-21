@@ -3,48 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sum Calculator Client</title>
+    <title>Sum Calculator Service</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            text-align: center;
-        }
-        input, button {
-            padding: 10px;
-            margin: 5px;
-            font-size: 16px;
-        }
-        #result {
-            margin-top: 20px;
-            font-weight: bold;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .error {
-            color: white;
-            background-color: #ff4d4d;
-        }
-        .success {
-            color: white;
-            background-color: #2ecc71;
-        }
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; text-align: center; background-color: #f4f7f6; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        input { padding: 10px; margin: 10px; width: 80px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 10px 20px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 4px; }
+        #result { margin-top: 20px; padding: 15px; font-weight: bold; border-radius: 4px; min-height: 20px; }
+        .error { background-color: #ffebee; color: #c62828; }
+        .success { background-color: #e8f5e9; color: #2e7d32; }
     </style>
 </head>
 <body>
-    <h1>Sum Calculator Service</h1>
-    <div>
-        <label for="numberA">Enter first number (a):</label>
-        <input type="number" id="numberA" placeholder="e.g., 1" required>
+    <div class="container">
+        <h1>Sum Calculator</h1>
+        <input type="number" id="numberA" placeholder="A"> + 
+        <input type="number" id="numberB" placeholder="B">
+        <br>
+        <button onclick="calculateSum()">Calculate Sum</button>
+        <div id="result"></div>
     </div>
-    <div>
-        <label for="numberB">Enter second number (b):</label>
-        <input type="number" id="numberB" placeholder="e.g., 1" required>
-    </div>
-    <button onclick="calculateSum()">Calculate Sum</button>
-    <div id="result"></div>
 
     <script>
         async function calculateSum() {
@@ -58,14 +36,10 @@
                 return;
             }
 
-            // ВАЖНО: Замените 'ВАШ-АДРЕС-СЕРВЕРА' на ссылку из Render (Web Service)
-            // Пример: https://sum-server-123.onrender.com
-            const baseUrl = 'https://ВАШ-АДРЕС-СЕРВЕРА.onrender.com'; 
-            
-            const url = `${baseUrl}/sum?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`;
+            const url = `https://project-c04r.onrender.com/sum?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`;
 
             resultDiv.className = '';
-            resultDiv.textContent = 'Connecting to server... (this may take 30s if server is sleeping)';
+            resultDiv.textContent = 'Processing...';
 
             try {
                 const response = await fetch(url);
@@ -73,15 +47,14 @@
 
                 if (response.ok) {
                     resultDiv.className = 'success';
-                    resultDiv.textContent = `Sum of ${data.a} and ${data.b} is ${data.sum}`;
+                    resultDiv.textContent = `Result: ${data.sum}`;
                 } else {
                     resultDiv.className = 'error';
-                    resultDiv.textContent = data.error || 'An error occurred';
+                    resultDiv.textContent = data.error;
                 }
             } catch (error) {
                 resultDiv.className = 'error';
-                resultDiv.textContent = 'Failed to connect to the server. Check your URL or wait for server to wake up.';
-                console.error('Error:', error);
+                resultDiv.textContent = 'Connection error. Check if the server is Live.';
             }
         }
     </script>
