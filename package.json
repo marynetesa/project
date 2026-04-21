@@ -1,0 +1,9 @@
+{
+  "name": "sum-server",
+  "version": "1.0.0",
+  "description": "API for summing numbers",
+  "main": "server_sum.js",
+  "scripts": {
+    "start": "node server_sum.js"
+  }
+}
